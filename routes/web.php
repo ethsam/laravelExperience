@@ -26,3 +26,19 @@ Route::get('/blog.html', function () {
 Route::get('/hotels.html', function () {
     return view('hotels');
 });
+
+Route::get('/inscription', function () {
+    return view('inscription');
+});
+
+Route::post('/inscription', function () {
+    return 'Votre email est ' . $_POST['email'];
+});
+
+Route::get('produits', [
+
+    'as' => 'hotels.index',
+
+    'uses' => 'HotelsController@index',
+
+]);
