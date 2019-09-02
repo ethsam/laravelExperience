@@ -32,7 +32,18 @@ Route::get('/inscription', function () {
 });
 
 Route::post('/inscription', function () {
-    return 'Votre email est ' . $_POST['email'];
+    request()->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required', 'confirmed', 'min:8'],
+        'password_confirm' => ['required'],
+    ]);
+
+    $utilisateur = App\Utilisateur::create([
+        'email' => request('email'),
+        'mot_de_passe' => bcrypt(request('password')),
+    ]);
+
+    return "Nous avons reçu votre email qui est " . request('email') . ' et votre mot de passe est ' . request('password');
 });
 
 Route::get('produits', [
@@ -42,3 +53,11 @@ Route::get('produits', [
     'uses' => 'HotelsController@index',
 
 ]);
+
+Route::get('/utilisateurs', function () {
+    $utilisateurs = App\Utilisateur::all();
+
+    return view('utilisateurs', [
+        'utilisateurs' => $utilisateurs
+    ]);
+});
